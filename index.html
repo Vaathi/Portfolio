@@ -431,35 +431,78 @@ Java • C++ • Python</h4>
                         </div>
                     </div>
                     <div class="flex gap-4 mt-16">
-                        <a href="#" class="text-2xl hover:scale-110 transition"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-2xl hover:scale-110 transition"><i class="fab fa-github"></i></a>
-                        <a href="#" class="text-2xl hover:scale-110 transition"><i class="fab fa-instagram"></i></a>
-                    </div>
+
+    <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/in/muniasamy-karthick-m/"
+       target="_blank"
+       title="LinkedIn"
+       class="text-2xl hover:text-blue-400 hover:scale-110 transition duration-300">
+        <i class="fab fa-linkedin"></i>
+    </a>
+
+    <!-- GitHub -->
+    <a href="https://github.com/Vaathi"
+       target="_blank"
+       title="GitHub"
+       class="text-2xl hover:text-gray-300 hover:scale-110 transition duration-300">
+        <i class="fab fa-github"></i>
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/kartxi_96/"
+       target="_blank"
+       title="Instagram"
+       class="text-2xl hover:text-pink-500 hover:scale-110 transition duration-300">
+        <i class="fab fa-instagram"></i>
+    </a>
+
+</div>
                 </div>
-                <div class="md:w-3/5 p-12">
-                    <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold uppercase text-gray-400">Name</label>
-                                <input type="text"
-                                    class="w-full bg-slate-800 border-b border-slate-700 py-3 px-1 focus:outline-none focus:border-accent transition">
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-bold uppercase text-gray-400">Email</label>
-                                <input type="email"
-                                    class="w-full bg-slate-800 border-b border-slate-700 py-3 px-1 focus:outline-none focus:border-accent transition">
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold uppercase text-gray-400">Message</label>
-                            <textarea rows="4"
-                                class="w-full bg-slate-800 border-b border-slate-700 py-3 px-1 focus:outline-none focus:border-accent transition"></textarea>
-                        </div>
-                        <button
-                            class="bg-gradient-primary w-full py-4 rounded-xl font-black text-lg hover:opacity-90 transition">SEND
-                            MESSAGE</button>
-                    </form>
-                </div>
+                <form id="contact-form" class="space-y-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div class="space-y-2">
+            <label class="text-sm font-bold uppercase text-gray-400">Name</label>
+
+            <input
+                type="text"
+                name="from_name"
+                required
+                class="w-full bg-slate-800 border-b border-slate-700 py-3 px-1 focus:outline-none focus:border-accent transition">
+        </div>
+
+        <div class="space-y-2">
+            <label class="text-sm font-bold uppercase text-gray-400">Email</label>
+
+            <input
+                type="email"
+                name="from_email"
+                required
+                class="w-full bg-slate-800 border-b border-slate-700 py-3 px-1 focus:outline-none focus:border-accent transition">
+        </div>
+
+    </div>
+
+    <div class="space-y-2">
+        <label class="text-sm font-bold uppercase text-gray-400">Message</label>
+
+        <textarea
+            rows="4"
+            name="message"
+            required
+            class="w-full bg-slate-800 border-b border-slate-700 py-3 px-1 focus:outline-none focus:border-accent transition"></textarea>
+    </div>
+
+    <button
+        type="submit"
+        id="sendBtn"
+        class="bg-gradient-primary w-full py-4 rounded-xl font-black text-lg hover:opacity-90 transition">
+
+        SEND MESSAGE
+
+    </button>
+
+</form>
             </div>
         </div>
     </section>
@@ -527,6 +570,132 @@ Java • C++ • Python</h4>
             if (window.scrollY > 300 && !counted) { startCount(); counted = true; }
         });
     </script>
+    <!-- Toast Notification -->
+<div id="toast"
+    class="fixed top-8 right-8 translate-x-[150%] transition-all duration-500 z-[9999]">
+
+    <div class="glass px-6 py-4 rounded-2xl border border-green-500/30 shadow-2xl">
+
+        <div class="flex items-center gap-4">
+
+            <div class="text-3xl text-green-400">
+                <i id="toastIcon" class="fas fa-circle-check"></i>
+            </div>
+
+            <div>
+
+                <h3 id="toastTitle" class="font-bold text-lg">
+                    Message Sent
+                </h3>
+
+                <p id="toastMessage" class="text-gray-400 text-sm">
+                    Thank you for contacting me.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+
+emailjs.init({
+    publicKey:"iENrvxGqUI59bHhID"
+});
+
+const form=document.getElementById("contact-form");
+const sendBtn=document.getElementById("sendBtn");
+
+const toast=document.getElementById("toast");
+const toastTitle=document.getElementById("toastTitle");
+const toastMessage=document.getElementById("toastMessage");
+const toastIcon=document.getElementById("toastIcon");
+
+function showToast(title,message,success=true){
+
+    toastTitle.innerHTML=title;
+    toastMessage.innerHTML=message;
+
+    if(success){
+
+        toastIcon.className="fas fa-circle-check text-green-400";
+
+    }else{
+
+        toastIcon.className="fas fa-circle-xmark text-red-400";
+
+    }
+
+    toast.classList.remove("translate-x-[150%]");
+
+    setTimeout(()=>{
+
+        toast.classList.add("translate-x-[150%]");
+
+    },3000);
+
+}
+
+form.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    sendBtn.disabled=true;
+
+    sendBtn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+    emailjs.sendForm(
+
+        "service_ruvdxr4",
+        "template_hxstouo",
+        this
+
+    )
+
+    .then(()=>{
+
+        showToast(
+
+            "Message Sent",
+
+            "Thanks! I'll get back to you soon.",
+
+            true
+
+        );
+
+        form.reset();
+
+        sendBtn.innerHTML="SEND MESSAGE";
+
+        sendBtn.disabled=false;
+
+    })
+
+    .catch((error) => {
+
+    console.log("EmailJS Error:", error);
+
+    alert(JSON.stringify(error));
+
+    showToast(
+        "Failed",
+        "Something went wrong. Please try again.",
+        false
+    );
+
+    sendBtn.innerHTML = "SEND MESSAGE";
+    sendBtn.disabled = false;
+
+});
+
+});
+
+</script>
 </body>
 
 </html>
